@@ -1,6 +1,12 @@
 #ifndef FDB_LIQUID_CRYSTAL_I2C_H
 #define FDB_LIQUID_CRYSTAL_I2C_H
 
+#if defined(ARDUINO) && ARDUINO >= 100
+ #include "Arduino.h"
+#else
+ #include "WProgram.h"
+#endif
+#include <Wire.h>
 #include <inttypes.h>
 #include <Print.h>
 
@@ -59,6 +65,9 @@
  */
 class LiquidCrystal_I2C : public Print {
 public:
+	typedef void (*DelayMicrosecondsFunc)(unsigned int microseconds);
+	typedef void (*DelayFunc)(unsigned long milliseconds);
+
 	/**
 	 * Constructor
 	 *
@@ -68,7 +77,8 @@ public:
 	 * @param lcd_rows	Number of rows your LCD display has.
 	 * @param charsize	The size in dots that the display has, use LCD_5x10DOTS or LCD_5x8DOTS.
 	 */
-	LiquidCrystal_I2C(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t charsize = LCD_5x8DOTS);
+	LiquidCrystal_I2C(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t charsize = LCD_5x8DOTS,
+		DelayFunc delayFunc = delay, DelayMicrosecondsFunc delayMicrosecondsFunc = delayMicroseconds);
 
 	/**
 	 * Set the LCD display in the correct begin state, must be called before anything else is done.
@@ -160,6 +170,8 @@ private:
 	uint8_t _rows;
 	uint8_t _charsize;
 	uint8_t _backlightval;
+	DelayFunc _delayFunc;
+	DelayMicrosecondsFunc _delayMicrosecondsFunc;
 };
 
 #endif // FDB_LIQUID_CRYSTAL_I2C_H

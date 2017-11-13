@@ -22,12 +22,17 @@
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
 
-LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t charsize)
+LiquidCrystal_I2C::LiquidCrystal_I2C(uint8_t lcd_addr, uint8_t lcd_cols,
+																		uint8_t lcd_rows, uint8_t charsize,
+																		DelayFunc delayFunc,
+																		DelayMicrosecondsFunc delayMicrosecondsFunc)
 {
 	_addr = lcd_addr;
 	_cols = lcd_cols;
 	_rows = lcd_rows;
 	_charsize = charsize;
+	_delayFunc = delayFunc;
+	_delayMicrosecondsFunc = delayMicrosecondsFunc;
 	_backlightval = LCD_BACKLIGHT;
 }
 
